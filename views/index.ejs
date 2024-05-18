@@ -17,18 +17,75 @@
   <body>
     <div id="navbar" class="navbar">Covid19_Map</div>
     <div id="infoBox" class="infoBox">
-      <div id="infoTitle" class="infoTitle">현재 날짜 :</div>
+      <div id="infoTitle" class="infoTitle">현재 날짜</div>
       <div id="infoContent" class="infoContent">2024.05.18(토)</div>
     </div>
     <div id="map" style="width: 100%; height: 100vh"></div>
-
+    <script type="text/javascript" src="/data/data.js"></script>
     <script>
-      var mapOptions = {
+      const mapOptions = {
         center: new naver.maps.LatLng(37.3595704, 127.105399),
         zoom: 10,
       };
+      const map = new naver.maps.Map("map", mapOptions);
 
-      var map = new naver.maps.Map("map", mapOptions);
+      const markerList = [];
+      const infowindowList = [];
+
+      for (let i in data) {
+        const target = data[i];
+        const latLng = new naver.maps.LatLng(target.lat, target.lng);
+        marker = new naver.maps.Marker({
+          map: map,
+          position: latLng,
+          icon: {
+            content: "<div class='marker'></div>",
+            anchor: new naver.maps.Point(12, 12),
+          },
+        });
+
+        const content = `<div class='infowindow_wrap'>
+            <div class='infowindow_title'>${target.title}</div>
+            <div class='infowindow_content'>${target.content}</div>
+            <div class='infowindow_date'>${target.date}</div>
+          </div>
+        `;
+
+        const infowindow = new naver.maps.InfoWindow({
+          content: content,
+          backgroundColor: "#00ff0000",
+          borderColor: "#00ff0000",
+          anchorSize: new naver.maps.Size(0, 0),
+        });
+
+        // 마커를 눌렀을 때 해당하는 인포윈도우를 띄우기 위한 코드
+        markerList.push(marker);
+        infowindowList.push(infowindow);
+      }
+
+      for (let i = 0, ii = markerList.length; i < ii; i++) {
+        naver.maps.Event.addListener(map, "click", ClickMap(i));
+        naver.maps.Event.addListener(markerList[i], "click", getClickHandler(i));
+      }
+
+      function ClickMap(i) {
+        return function () {
+          const infowindow = infowindowList[i];
+          infowindow.close();
+        };
+      }
+
+      function getClickHandler(i) {
+        return function () {
+          const marger = markerList[i];
+          const infowindow = infowindowList[i];
+          if (infowindow.getMap()) {
+            infowindow.close();
+          } else {
+            infowindow.open(map, marker);
+          }
+        };
+      }
     </script>
   </body>
 </html>
