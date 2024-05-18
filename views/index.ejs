@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="kr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no"
+    />
+    <title>COVID_MAP</title>
+    <link rel="stylesheet" href="/stylesheets/style.css" />
+    <script
+      type="text/javascript"
+      src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=<%= ncpClientId %>"
+    ></script>
+  </head>
+  <body>
+    <div id="navbar" class="navbar">Covid19_Map</div>
+    <div id="infoBox" class="infoBox">
+      <div id="infoTitle" class="infoTitle">현재 날짜 :</div>
+      <div id="infoContent" class="infoContent">2024.05.18(토)</div>
+    </div>
+    <div id="map" style="width: 100%; height: 100vh"></div>
+
+    <script>
+      var mapOptions = {
+        center: new naver.maps.LatLng(37.3595704, 127.105399),
+        zoom: 10,
+      };
+
+      var map = new naver.maps.Map("map", mapOptions);
+    </script>
+  </body>
+</html>
