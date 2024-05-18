@@ -22,7 +22,7 @@ app.use(express.static(path.join(__dirname, "public")));
 
 // Home route setup
 app.get("/", (req, res) => {
-  res.render("index", { ncpClientId: process.env.NCP_CLIENT_ID });
+  res.render("index", { ncpClientId: process.env.NCP_CLIENT_ID, kakaoApiKey: process.env.KAKAO_API_KEY });
 });
 
 app.use("/", indexRouter);
