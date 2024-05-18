@@ -90,16 +90,25 @@
         };
       }
 
+      let currentUse = true;
+
       $("#current").click(() => {
         if ("geolocation" in navigator) {
           navigator.geolocation.getCurrentPosition(function (position) {
             const lat = position.coords.latitude;
             const lng = position.coords.longitude;
             const latlng = new naver.maps.LatLng(lat, lng);
-            marker = new naver.maps.Marker({
-              map: map,
-              position: latlng,
-            });
+            if (currentUse) {
+              marker = new naver.maps.Marker({
+                map: map,
+                position: latlng,
+                icon: {
+                  content: '<img class="pulse" draggable="false" unselectable="on" src="/images/current.png" >',
+                  anchor: new naver.maps.Point(12, 12),
+                },
+              });
+              currentUse = false;
+            }
             map.setZoom(14, false);
             map.panTo(latlng);
           });
