@@ -13,6 +13,7 @@
       type="text/javascript"
       src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=<%= ncpClientId %>"
     ></script>
+    <script src="https://code.jquery.com/jquery-latest.min.js"></script>
   </head>
   <body>
     <div id="navbar" class="navbar">Covid19_Map</div>
@@ -22,6 +23,7 @@
     </div>
     <div id="current" class="current">현재 위치</div>
     <div id="map" style="width: 100%; height: 100vh"></div>
+
     <script type="text/javascript" src="/data/data.js"></script>
     <script>
       const mapOptions = {
@@ -87,6 +89,24 @@
           }
         };
       }
+
+      $("#current").click(() => {
+        if ("geolocation" in navigator) {
+          navigator.geolocation.getCurrentPosition(function (position) {
+            const lat = position.coords.latitude;
+            const lng = position.coords.longitude;
+            const latlng = new naver.maps.LatLng(lat, lng);
+            marker = new naver.maps.Marker({
+              map: map,
+              position: latlng,
+            });
+            map.setZoom(14, false);
+            map.panTo(latlng);
+          });
+        } else {
+          alert("위치정보 사용 불가능");
+        }
+      });
     </script>
   </body>
 </html>
